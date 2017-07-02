@@ -16,31 +16,28 @@
 # This program is designed to check a series of webpages for changes in certain parts of their
 # code and email me with the changes
 
-import bs4
 import requests
 import smtplib
 
 
-MCLchange = []
 res = requests.get('https://multcolib.org/about/jobs-library') # Multnomah County
 res.raise_for_status()
 
-soup = bs4.BeautifulSoup(res.text, "lxml")
+newMCL = res.text
 
-MCLtext = soup.select('#content')
-
-MCLchange.append(MCLtext)
+# opening and reading the old html doc as a string
 oldMCL = open('Multnomah County library Old')
+oldMCL = oldMCL.read()
 
 #this successfully changes the old document to the new website
-if MCLchange != oldMCL:
+if newMCL != oldMCL:
     #saves the page as a file to the HD
     playFile = open('Multnomah County library Old', 'wb') 
     for chunk in res.iter_content(100000):
         playFile.write(chunk)
     playFile.close()
     #emails me if there are changes
-    #TODO: right now it emails me regardless -> need it to only email if there have been changes
+    #TODO: right now it emails me regardless -> need it to only email if there have been changes    
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
