@@ -20,27 +20,35 @@ import bs4
 import requests
 import smtplib
 
+
 MCLchange = []
 res = requests.get('https://multcolib.org/about/jobs-library') # Multnomah County
 res.raise_for_status()
 
-soup = bs4.BeautifulSoup(res.text)
+soup = bs4.BeautifulSoup(res.text, "lxml")
 
 MCLtext = soup.select('#content')
-print(MCLtext)
 
 MCLchange.append(MCLtext)
 oldMCL = open('Multnomah County library Old')
 
+#this successfully changes the old document to the new website
 if MCLchange != oldMCL:
     #saves the page as a file to the HD
     playFile = open('Multnomah County library Old', 'wb') 
     for chunk in res.iter_content(100000):
         playFile.write(chunk)
     playFile.close()
-    msg = 'Subject: MCL jobs page has changed'
-    fromaddr = 'ianatnorthfield@gmail.com'
-    toaddrs = ['holmesian17@gmail.com']
+    #emails me if there are changes
+    #TODO: right now it emails me regardless -> need it to only email if there have been changes
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.login('noreply.job.updates@gmail.com', 'zxcvbnm1029384756')
+    server.sendmail('noreply.job.updates@gmail.com', 'holmesian17@gmail.com', 'Subject: MCL jobs page has changed\nhttps://multcolib.org/about/jobs-library')
+    server.quit()
+
+
 
     
 
