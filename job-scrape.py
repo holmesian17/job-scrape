@@ -26,18 +26,17 @@ res.raise_for_status()
 newMCL = res.text
 
 # opening and reading the old html doc as a string
-oldMCL = open('Multnomah County library Old')
+oldMCL = open('Multnomah County library Old') #TODO: create a folder for these and html files for each site and make it the correct path
 oldMCL = oldMCL.read()
 
 #this successfully changes the old document to the new website
 if newMCL != oldMCL:
-    #saves the page as a file to the HD
+    #saves the page as a file to the HD if there are changes
     playFile = open('Multnomah County library Old', 'wb') 
     for chunk in res.iter_content(100000):
         playFile.write(chunk)
     playFile.close()
     #emails me if there are changes
-    #TODO: right now it emails me regardless -> need it to only email if there have been changes    
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
