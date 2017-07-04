@@ -1,50 +1,64 @@
-# check website html against the html of the previous day
-# if != then send me an email
-# can i get it to send me the job title too?
-# have a look at what chase has done
-
-# download the webstie html for the jobs (not the whole site, that could change and i won't care)
-# save it into a list or file or dictionary - whatever is easiest
-# have the program download the current day's html for the jobs
-# if previous change != new html then save new html as previous change
-    # and email me a notification and the new job 
-# need to do this for multiple (30+) webpages - can this be done all in one code?
-# need to find the relevant html parts for each site
-# loop through the list of websites? - save to different things for comparison?     
-
 #! python3
 # This program is designed to check a series of webpages for changes in certain parts of their
 # code and email me with the changes
 
 import requests
 import smtplib
+import bs4
+import pprint
 
 
 res = requests.get('https://multcolib.org/about/jobs-library') # Multnomah County
 res.raise_for_status()
-
-newMCL = res.text
+MCLsoup = bs4.BeautifulSoup(res.text, "lxml")
+newMCL = MCLsoup.select('#content')
 
 # opening and reading the old html doc as a string
-oldMCL = open('Multnomah County library Old') #TODO: create a folder for these and html files for each site and make it the correct path
+oldMCL = open('/home/ian/libsitehtml/oldMCL')
 oldMCL = oldMCL.read()
 
 #this successfully changes the old document to the new website
-if newMCL != oldMCL:
+if str(newMCL) != str(oldMCL):
     #saves the page as a file to the HD if there are changes
-    playFile = open('Multnomah County library Old', 'wb') 
-    for chunk in res.iter_content(100000):
-        playFile.write(chunk)
-    playFile.close()
+    file = open('/home/ian/libsitehtml/oldMCL', 'w') 
+    file.write(str(newMCL))
+    file.close()
     #emails me if there are changes
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
     server.login('noreply.job.updates@gmail.com', 'zxcvbnm1029384756')
-    server.sendmail('noreply.job.updates@gmail.com', 'holmesian17@gmail.com', 'Subject: MCL jobs page has changed\nhttps://multcolib.org/about/jobs-library')
+    server.sendmail('noreply.job.updates@gmail.com', 'holmesian17@gmail.com', 'Subject: MCL jobs page has changed\n' '\n Here is a link: https://multcolib.org/about/jobs-library')
     server.quit()
 
+res = requests.get('https://libwww.freelibrary.org/jobs/JobList.cfm') # Philadelphia Free Library
+res.raise_for_status()
+PFLsoup = bs4.BeautifulSoup(res.text, "lxml")
+newPFL = PFLsoup.select('.col-md-12')
+file = open('/home/ian/libsitehtml/newPFL', 'w')
+file.write(str(newPFL))
+file.close()
 
+newPFL = open('/home/ian/libsitehtml/newPFL')
+newPFL = newPFL.read()
+
+# opening and reading the old html doc as a string
+oldPFL = open('/home/ian/libsitehtml/oldPFL')
+oldPFL = oldPFL.read()
+
+#this successfully changes the old document to the new website
+if str(newPFL) != str(oldPFL):
+    #saves the page as a file to the HD if there are changes
+    file = open('/home/ian/libsitehtml/oldPFL', 'w') 
+    file.write(str(newPFL))
+    file.close()
+    #emails me if there are changes
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.login('noreply.job.updates@gmail.com', 'zxcvbnm1029384756')
+    server.sendmail('noreply.job.updates@gmail.com', 'holmesian17@gmail.com', 'Subject: PFL jobs page has changed\n' '\n Here is a link: https://multcolib.org/about/jobs-library')
+    server.quit()
 
     
 
