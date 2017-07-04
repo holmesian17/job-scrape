@@ -3,6 +3,8 @@ import requests
 import smtplib
 import bs4
 
+#TODO: make it so these lists can be imported from elsewhere - have files that are the list items
+
 abbvs = ['MCL', 'PFL', 'OPPL', 'VPL']
 urls = ['https://multcolib.org/about/jobs-library', 'https://libwww.freelibrary.org/jobs/JobList.cfm', 'http://oppl.org/get-involved/jobs', 'https://jobs.vancouver.ca/go/Vancouver-Public-Library/3065800/']
 olddocs = ['oldMCL', 'oldPFL', 'oldOPPL', 'oldVPL']
