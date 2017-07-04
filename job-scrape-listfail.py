@@ -13,9 +13,7 @@ for url in urls:
     current = res.text
     for doc in docs:
         open('/home/ian/libsitehtml/'+doc)
-    if current == doc:
-        break
-    else:
+    if str(current) != str(doc):
         playFile = open('/home/ian/libsitehtml/'+doc, 'wb')
         for chunk in res.iter_content(100000):
             playFile.write(chunk)
