@@ -3,19 +3,31 @@ import requests
 import smtplib
 import bs4
 
-abbvs = ['MCL', 'PFL', 'OPPL']
+abbvs = ['MCL', 'PFL', 'OPPL', '']
 urls = ['https://multcolib.org/about/jobs-library', 'https://libwww.freelibrary.org/jobs/JobList.cfm', 'http://oppl.org/get-involved/jobs']
-docs = ['oldMCL', 'oldPFL', 'oldOPPL']
+olddocs = ['oldMCL', 'oldPFL', 'oldOPPL']
+newdocs = ['newMCL', 'newPFL', 'newOPPL']
+bstags = ['#content', '.col-md-12', '#main']
 
 for url in urls: 
     res = requests.get(url)
     res.raise_for_status()
-    current = res.text
-    for doc in docs:
-        open('/home/ian/libsitehtml/'+doc)
-    if str(current) != str(doc):
-        file = open('/home/ian/libsitehtml/'+doc, 'w') 
-        file.write(current)
+    for bstag in bstags: 
+        currentsoup = bs4.BeautifulSoup(res.text, "lxml")
+        newsoup = currentsoup.select(bstag)
+    for newdoc in newdocs: #this could trip me up, olddoc might need to be under here too
+        file = open('/home/ian/libsitehtml/'+newdoc, 'w')
+        file.write(str(newsoup)) #this could trip me up
+        file.close()
+
+        new = open('/home/ian/libsitehtml/'+newdoc)
+        new = new.read()
+    for olddoc in olddocs:
+        old = open('/home/ian/libsitehtml/'+olddoc)
+        old = old.read()
+    if str(old) != str(new):
+        file = open('/home/ian/libsitehtml/'+olddoc, 'w') 
+        file.write(str(new))
         file.close()
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
