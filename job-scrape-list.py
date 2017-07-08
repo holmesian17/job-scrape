@@ -4,12 +4,12 @@ import smtplib
 import bs4
 import os
 
-abbvs = ['MCL', 'PFL', 'OPPL', 'VanPL', 'VicPL', 'FCPL', 'AnyPL', 'BurnPL', 'CoqPL', 'TorPL']
+abbvs = ['MCL', 'PFL', 'OPPL', 'VanPL', 'VicPL', 'FCPL', 'AnyPL', 'BurnPL', 'CoqPL', 'TorPL', 'NOLS', 'VanWaPL']
 openurls = open('/home/ian/PythonPrograms/job-scrape/urls', 'r')
 urls = openurls.read().strip('\n').split(',')
-olddocs = ['oldMCL', 'oldPFL', 'oldOPPL', 'oldVanPL', 'oldVicPL', 'oldFCPL', 'oldAnyPL', 'oldBurnPL', 'oldCoqPL', 'oldTorPL']
-newdocs = ['newMCL', 'newPFL', 'newOPPL', 'newVanPL', 'newVicPL', 'newFCPL', 'newAnyPL', 'newBurnPL', 'newCoqPL', 'newTorPL']
-bstags = ['#content', '.col-md-12', '#main', '#searchResultsShell', '#main', '#containedInVSplit', '.col-sm-7', '.large-9.push-3.main.columns', '.sfContentBlock', '#grid_10']
+olddocs = ['oldMCL', 'oldPFL', 'oldOPPL', 'oldVanPL', 'oldVicPL', 'oldFCPL', 'oldAnyPL', 'oldBurnPL', 'oldCoqPL', 'oldTorPL', 'oldNOLS', 'oldVanWaPL']
+newdocs = ['newMCL', 'newPFL', 'newOPPL', 'newVanPL', 'newVicPL', 'newFCPL', 'newAnyPL', 'newBurnPL', 'newCoqPL', 'newTorPL', 'newNOLS', 'newVanWaPL']
+bstags = ['#content', '.col-md-12', '#main', '#searchResultsShell', '#main', '#containedInVSplit', '.col-sm-7', '.large-9.push-3.main.columns', '.sfContentBlock', '#grid_10', '.statement-left-div', '#main']
 
 #TODO: write script for if the document doesn't exist, then it creates it
 
