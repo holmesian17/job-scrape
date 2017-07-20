@@ -29,6 +29,6 @@ for abbv, url, bstag in zip(abbvs, urls, bstags):
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.ehlo()
         server.starttls()
-        server.login('noreply.job.updates@gmail.com', 'zxcvbnm1029384756')
-        server.sendmail('noreply.job.updates.com', 'holmesian17@gmail.com', 'Subject: A foreign library\'s jobs page has changed\n' '\n' + 'Here\'s the URL:' + str(url))
+        server.login('noreply.job.updates@gmail.com', 'password')
+        server.sendmail('noreply.job.updates.com', 'email', 'Subject: A foreign library\'s jobs page has changed\n' '\n' + 'Here\'s the URL:' + str(url))
         server.quit()
